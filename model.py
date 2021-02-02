@@ -155,7 +155,7 @@ train_model(train_dl, model)
 mse = evaluate_model(test_dl, model)
 print('MSE: %.3f, RMSE: %.3f' % (mse, sqrt(mse)))
 # make a single prediction (expect class=1)
-row = [0.5, 0, 0.490990253, 0.357142857, 0, 1.25, 0.25,
-       0.593585991, 0.445605874, 0, 0.398161292, 0.677419355]
+row = [1, 0.818181818, 0.9701425, 0.976480793, 1, 0, 1,
+       0.976947257, 0.954986513, 78.78787879, 0.938977063, 0.998986829]
 yhat = predict(row, model)
 print('Predicted: %.3f' % yhat)
