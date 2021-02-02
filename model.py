@@ -148,7 +148,7 @@ path = 'train.csv'
 train_dl, test_dl = prepare_data(path)
 print(len(train_dl.dataset), len(test_dl.dataset))
 # define the network
-model = MLP(13)
+model = MLP(12)
 # train the model
 train_model(train_dl, model)
 # evaluate the model
