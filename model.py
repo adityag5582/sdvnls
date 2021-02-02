@@ -15,14 +15,16 @@ from torch.nn import MSELoss
 from torch.nn.init import xavier_uniform_
 
 # dataset definition
+
+
 class CSVDataset(Dataset):
     # load the dataset
     def __init__(self, path):
         # load the csv file as a dataframe
         df = read_csv(path, header=None)
         # store the inputs and outputs
-        self.X = df.values[:,1:].astype('float32')
-        self.y = df.values[:,0].astype('float32')
+        self.X = df.values[:, 1:].astype('float32')
+        self.y = df.values[:, 0].astype('float32')
         # ensure target has the right shape
         self.y = self.y.reshape((len(self.y), 1))
 
@@ -43,6 +45,8 @@ class CSVDataset(Dataset):
         return random_split(self, [train_size, test_size])
 
 # model definition
+
+
 class MLP(Module):
     # define model elements
     def __init__(self, n_inputs):
@@ -64,7 +68,7 @@ class MLP(Module):
         # input to first hidden layer
         X = self.hidden1(X)
         X = self.act1(X)
-         # second hidden layer
+        # second hidden layer
         X = self.hidden2(X)
         X = self.act2(X)
         # third hidden layer and output
@@ -72,6 +76,8 @@ class MLP(Module):
         return X
 
 # prepare the dataset
+
+
 def prepare_data(path):
     # load the dataset
     dataset = CSVDataset(path)
@@ -83,6 +89,8 @@ def prepare_data(path):
     return train_dl, test_dl
 
 # train the model
+
+
 def train_model(train_dl, model):
     # define the optimization
     criterion = MSELoss()
@@ -103,6 +111,8 @@ def train_model(train_dl, model):
             optimizer.step()
 
 # evaluate the model
+
+
 def evaluate_model(test_dl, model):
     predictions, actuals = list(), list()
     for i, (inputs, targets) in enumerate(test_dl):
@@ -121,6 +131,8 @@ def evaluate_model(test_dl, model):
     return mse
 
 # make a class prediction for one row of data
+
+
 def predict(row, model):
     # convert row to data
     row = Tensor([row])
@@ -129,6 +141,7 @@ def predict(row, model):
     # retrieve numpy array
     yhat = yhat.detach().numpy()
     return yhat
+
 
 # prepare the data
 path = 'train.csv'
@@ -142,6 +155,7 @@ train_model(train_dl, model)
 mse = evaluate_model(test_dl, model)
 print('MSE: %.3f, RMSE: %.3f' % (mse, sqrt(mse)))
 # make a single prediction (expect class=1)
-row = [0.3125,0.0,0.33678765702728175,0.26352313834736496,0.0,0.0,0.0,0.2222222222222222,0.5545161322750148,0.4464029904290582,0.0,0.4095638692378998,0.3546099290780142]
+row = [0.5, 0, 0.4114756, 0.517857143, 0, 1.208333333, 0.416666667,
+       0.657777307, 0.497967025, 0, 0.501994491, 0.702718676]
 yhat = predict(row, model)
 print('Predicted: %.3f' % yhat)
